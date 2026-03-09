@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  vmImage: gkeagent_1
+  name: 'gke pool agent'
 
 steps:
 - checkout: self
