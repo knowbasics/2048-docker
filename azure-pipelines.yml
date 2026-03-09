@@ -27,10 +27,12 @@ steps:
     secureFile: 'valiant-broker-486403-v9-a3d3767aef59.json'
 
 - script: |
+    set PATH=%PATH%;"C:\Program Files\Google\Cloud SDK\google-cloud-sdk\bin"
+    gcloud --version
     gcloud auth activate-service-account --key-file=$(gcpKey.secureFilePath)
     gcloud auth configure-docker us-central1-docker.pkg.dev -q
   displayName: Authenticate to GCP
-
+  
 - script: |
     docker tag my-app:latest us-central1-docker.pkg.dev/valiant-broker-486403/my-repo/my-app:latest
     docker push us-central1-docker.pkg.dev/valiant-broker-486403/my-repo/my-app:latest
