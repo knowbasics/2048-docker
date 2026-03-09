@@ -20,3 +20,18 @@ steps:
     repository: myapp
     tags: |
       $(Build.BuildId)
+
+- task: DownloadSecureFile@1
+  name: gcpKey
+  inputs:
+    secureFile: 'valiant-broker-486403-v9-a3d3767aef59.json'
+
+- script: |
+    gcloud auth activate-service-account --key-file=$(gcpKey.secureFilePath)
+    gcloud auth configure-docker us-central1-docker.pkg.dev -q
+  displayName: Authenticate to GCP
+
+- script: |
+    docker tag my-app:latest us-central1-docker.pkg.dev/valiant-broker-486403/my-repo/my-app:latest
+    docker push us-central1-docker.pkg.dev/valiant-broker-486403/my-repo/my-app:latest
+  displayName: Push Image
